@@ -3,8 +3,10 @@ import os.path
 import random
 import sys
 import datetime
+import time
 
 import yaml
+import requests
 
 pythonpath = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 sys.path.insert(0, pythonpath)
@@ -50,6 +52,20 @@ def get_output(config_name):
     return outputs
 
 
+def call_back(call_back_url, task_id, call_back_output, retrys=3):
+    if retrys == 0:
+        print(f"重试次数用完:{task_id}")
+        return
+    url = call_back_url + task_id
+    response = requests.post(url, data={'imgs': str(call_back_output)})
+    if response.status_code == 200:
+        print(f"回调成功:{task_id}")
+    else:
+        print(f"回调失败，准备重试:{task_id}")
+        time.sleep(5 * (4 - retrys))
+        call_back_url(call_back_url, task_id, retrys - 1)
+
+
 def consume_magic_task(task):
     print(f"magic_api任务开始：{datetime.datetime.now()}")
     print(f"获取到任务参数:{str(task)}")
@@ -57,6 +73,7 @@ def consume_magic_task(task):
     img_url = task['img_url']
     task_id = task['id']
     poss = task['poss'] + '.mp4'
+    call_back_url = task['call_back_url']
     # 下载文件
     oss_util.fetch_img(img_url, oss_util.get_file_name_by_url(img_url), './inputs/applications/api_image/')
     # 创建配置
@@ -73,6 +90,7 @@ def consume_magic_task(task):
     outputs = get_output(task_id)
     oss_config = load_oss_config()
     auth = oss_util.init_auth(oss_config['access_key_id'], oss_config['access_key_secret'])
+    call_back_output = []
     for output in outputs:
         if output.find('grid.mp4') != -1:
             filename = str(task_id) + '_' + output.split('/')[-1]
@@ -80,9 +98,11 @@ def consume_magic_task(task):
             filename = str(task_id) + '_' + output.split('/')[-1]
         oss_util.upload_file(auth, oss_config['end_point'], oss_config['bucket_name'],
                              output, "magic_api_result/" + filename)
+        call_back_output.append("magic_api_result/" + filename)
     print(f"输出上传完成:{str(outputs)}")
     # call_back
-
+    if call_back_url is not None:
+        call_back(call_back_url, task_id, call_back_output)
     print(f"magic_api任务结束：{datetime.datetime.now()}")
 
 
