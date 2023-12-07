@@ -1,5 +1,6 @@
 import argparse
 import os.path
+import random
 import sys
 import datetime
 
@@ -86,12 +87,14 @@ def consume_magic_task(task):
 
 
 if __name__ == '__main__':
-    test_task = {
-        'id': '2',
-        'img_url': 'https://dzy-test-model-bucket.oss-rg-china-mainland.aliyuncs.com/human/ybg.jpg',
-        'poss': 'dancing2',
-    }
-    consume_magic_task(test_task)
+    pos_array = ['dancing2', 'demo4', 'multi_dancing', 'running', 'running2']
+    for i in range(4, 10):
+        test_task = {
+            'id': str(i),
+            'img_url': 'https://dzy-test-model-bucket.oss-rg-china-mainland.aliyuncs.com/human/ybg.jpg',
+            'poss': pos_array[random.randint(0, len(pos_array) - 1)],
+        }
+        consume_magic_task(test_task)
 
     # print(get_output('1'))
     # oss_config = load_oss_config()
