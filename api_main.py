@@ -3,6 +3,7 @@ import os.path
 import sys
 import datetime
 
+import yaml
 
 pythonpath = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 sys.path.insert(0, pythonpath)
@@ -10,6 +11,7 @@ sys.path.insert(0, pythonpath)
 import magicanimate.pipelines.animation
 
 import api_utils.prompt_config_util as prompt_config_util
+import api_utils.oss_util as oss_util
 
 def start_animate_pipe(animate_config):
     parser = argparse.ArgumentParser()
@@ -26,12 +28,22 @@ def start_animate_pipe(animate_config):
     magicanimate.pipelines.animation.run(args)
     print(f"流水线结束 {datetime.datetime.now()}")
 
+
+def load_oss_config():
+    with open("configs/api/api_config.yaml") as config_file:
+        config = yaml.load(config_file.read(), Loader=yaml.Loader)
+        return config['oss']
+
+
 if __name__ == '__main__':
-    config_file = prompt_config_util.generate_config("monalisa.png",
-                                                     "running.mp4",
-                                                     "monalisatest",
-                                                     "configs/prompts/1.yaml",
-                                                     "configs/prompts",
-                                                     )
-    start_animate_pipe(config_file)
+    oss_config = load_oss_config()
+    auth = oss_util.init_auth(oss_config['access_key_id'], oss_config['access_key_secret'])
+    print(oss_util.upload_file(auth, oss_config['end_point'] , oss_config['bucket_name'], "./inputs/applications/api_image/monalisa.png"))
+    # config_file = prompt_config_util.generate_config("monalisa.png",
+    #                                                  "running.mp4",
+    #                                                  "monalisatest",
+    #                                                  "configs/prompts/1.yaml",
+    #                                                  "configs/prompts",
+    #                                                  )
+    # start_animate_pipe(config_file)
     # start_animate_pipe('configs/prompts/1.yaml')

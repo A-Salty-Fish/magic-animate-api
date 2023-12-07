@@ -11,3 +11,4 @@ pretrained_models
 demo/tmp
 demo/outputs
 /api_utils/configs/api_config.yaml
+/configs/api/api_config.yaml
