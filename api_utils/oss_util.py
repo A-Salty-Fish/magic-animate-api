@@ -4,7 +4,7 @@ import requests
 import yaml
 
 def load_oss_config():
-    with open("../config/api_config.yaml") as config_file:
+    with open("../configs/api_config.yaml") as config_file:
         config = yaml.load(config_file.read(), Loader=yaml.Loader)
         return config['oss']
 

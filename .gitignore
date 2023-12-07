@@ -10,4 +10,4 @@ pretrained_models
 ./*.mp4
 demo/tmp
 demo/outputs
-/api/config/api_config.yaml
+/api_utils/configs/api_config.yaml
