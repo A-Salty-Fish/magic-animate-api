@@ -73,9 +73,9 @@ def consume_magic_task(task):
     auth = oss_util.init_auth(oss_config['access_key_id'], oss_config['access_key_secret'])
     for output in outputs:
         if output.find('grid.mp4') != -1:
-            filename = str(task_id) + '_' + output.split('//')[-1]
+            filename = str(task_id) + '_' + output.split('/')[-1]
         else:
-            filename = str(task_id) + '_' + output.split('//')[-1]
+            filename = str(task_id) + '_' + output.split('/')[-1]
         oss_util.upload_file(auth, oss_config['end_point'], oss_config['bucket_name'],
                              output, "magic_api_result/" + filename)
     print(f"输出上传完成:{str(outputs)}")
