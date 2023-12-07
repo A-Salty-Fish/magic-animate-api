@@ -11,6 +11,7 @@ def generate_config(img_name, poss_name, config_name, example_config, new_config
         config['video_path'] = [poss_pre_path + poss_name]
         with open(f"{new_config_path}/{config_name}.yml" , "w") as f:
             yaml.dump(config, f)
+            print(f"创建配置成功:{config_name}")
             return f'configs/prompts/{config_name}.yml'
 
 

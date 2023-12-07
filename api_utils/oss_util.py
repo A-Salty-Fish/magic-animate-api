@@ -17,10 +17,11 @@ def fetch_img(url, filename, path):
         response = requests.get(url)
         with open(path + filename, "wb") as f:
             f.write(response.content)
+        print(f"下载文件成功：{url}")
         return True
     except Exception as e:
         print(e)
-        print("下载文件失败")
+        print(f"下载文件失败：{url}")
         return False
 
 
@@ -53,6 +54,7 @@ def upload_file(auth, end_point, bucket_name, file_path, file_name):
         return True
     except Exception as e:
         print(e)
+        print(f"上传失败：{file_name}")
         return False
 
 
