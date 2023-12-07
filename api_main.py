@@ -27,6 +27,11 @@ def start_animate_pipe(animate_config):
     print(f"流水线结束 {datetime.datetime.now()}")
 
 if __name__ == '__main__':
-    config_file = prompt_config_util.generate_config("monalisa.png", "running.mp4", "monalisatest")
+    config_file = prompt_config_util.generate_config("monalisa.png",
+                                                     "running.mp4",
+                                                     "monalisatest",
+                                                     "configs/prompts/1.yaml",
+                                                     "configs/prompts",
+                                                     )
     start_animate_pipe(config_file)
     # start_animate_pipe('configs/prompts/1.yaml')
