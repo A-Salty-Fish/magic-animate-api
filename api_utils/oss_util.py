@@ -49,7 +49,7 @@ def upload_file(auth, end_point, bucket_name, file_path, file_name):
     # yourLocalFile由本地文件路径加文件名包括后缀组成，例如/users/local/myfile.txt。
     try:
         bucket.put_object_from_file(file_name, file_path)
-        print(f"上传成功{file_name}")
+        print(f"上传成功：{file_name}")
         return True
     except Exception as e:
         print(e)
