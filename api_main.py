@@ -3,10 +3,13 @@ import os.path
 import sys
 import datetime
 
+
 pythonpath = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 sys.path.insert(0, pythonpath)
 
 import magicanimate.pipelines.animation
+
+import api_utils.prompt_config_util as prompt_config_util
 
 def start_animate_pipe(animate_config):
     parser = argparse.ArgumentParser()
@@ -24,5 +27,6 @@ def start_animate_pipe(animate_config):
     print(f"流水线结束 {datetime.datetime.now()}")
 
 if __name__ == '__main__':
-
-    start_animate_pipe('configs/prompts/1.yaml')
+    config_file = prompt_config_util.generate_config("monalisa.png", "running.mp4", "monalisatest")
+    start_animate_pipe(config_file)
+    # start_animate_pipe('configs/prompts/1.yaml')
