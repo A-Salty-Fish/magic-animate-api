@@ -50,6 +50,7 @@ def get_output(config_name):
 
 
 def consume_magic_task(task):
+    print(f"magic_api任务开始：{datetime.datetime.now()}")
     print(f"获取到任务参数:{str(task)}")
     # 获取参数
     img_url = task['img_url']
@@ -81,6 +82,7 @@ def consume_magic_task(task):
     print(f"输出上传完成:{str(outputs)}")
     # call_back
 
+    print(f"magic_api任务结束：{datetime.datetime.now()}")
 
 
 if __name__ == '__main__':
