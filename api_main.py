@@ -41,7 +41,7 @@ def get_output(config_name):
     output_dirs = os.listdir('./samples')
     outputs = []
     for output_dir in output_dirs:
-        if output_dir.startswith(config_name):
+        if output_dir.startswith(config_name + '-'):
             directory = './samples/' + output_dir
             for root, _, files in os.walk(directory):
                 for file in files:
