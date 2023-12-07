@@ -38,7 +38,7 @@ def load_oss_config():
 if __name__ == '__main__':
     oss_config = load_oss_config()
     auth = oss_util.init_auth(oss_config['access_key_id'], oss_config['access_key_secret'])
-    print(oss_util.upload_file(auth, oss_config['end_point'] , oss_config['bucket_name'], "./inputs/applications/api_image/monalisa.png"))
+    print(oss_util.upload_file(auth, oss_config['end_point'] , oss_config['bucket_name'], "./inputs/applications/api_image/monalisa.png", "magic_api_result/monalisa.png"))
     # config_file = prompt_config_util.generate_config("monalisa.png",
     #                                                  "running.mp4",
     #                                                  "monalisatest",
