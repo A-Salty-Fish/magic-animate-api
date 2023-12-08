@@ -77,9 +77,10 @@ def call_back(call_back_url, task_id, call_back_output, retrys=3):
     if response.status_code == 200:
         print(f"回调成功:{task_id}")
     else:
+        print(response.content)
         print(f"回调失败，准备重试:{task_id}")
         time.sleep(5 * (4 - retrys))
-        call_back_url(call_back_url, task_id, retrys - 1)
+        call_back(call_back_url, task_id, retrys - 1)
 
 
 def consume_magic_task(task):
