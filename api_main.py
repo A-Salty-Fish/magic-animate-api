@@ -79,7 +79,7 @@ def call_back(call_back_url, task_id, call_back_output, retrys=3):
         "accept": "*/*",
         "Content-Type": "application/json",
     }
-    response = requests.post(url, headers=headers, data={'imgs': str(call_back_output)})
+    response = requests.post(url, headers=headers, data=json.dumps({'imgs': str(call_back_output)}))
     if response.status_code == 200:
         print(f"回调成功:{task_id}")
     else:
