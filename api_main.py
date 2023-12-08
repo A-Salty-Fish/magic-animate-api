@@ -115,7 +115,7 @@ def consume_magic_task(task):
             filename = str(task_id) + '_' + output.split('/')[-1]
         oss_util.upload_file(auth, oss_config['end_point'], oss_config['bucket_name'],
                              output, "magic_api_result/" + filename)
-        call_back_output.append("magic_api_result/" + filename)
+        call_back_output.append(str("magic_api_result/" + filename))
     print(f"输出上传完成:{str(outputs)}")
     # call_back
     if call_back_url is not None:
