@@ -41,6 +41,7 @@ def load_oss_config():
         config = yaml.load(config_file.read(), Loader=yaml.Loader)
         return config['oss']
 
+
 def load_rabbitmq_config():
     with open("configs/api/api_config.yaml") as config_file:
         config = yaml.load(config_file.read(), Loader=yaml.Loader)
@@ -49,7 +50,8 @@ def load_rabbitmq_config():
 
 def init_rabbitmq_channel(rabbitmq_config):
     credentials = pika.PlainCredentials(rabbitmq_config['username'], rabbitmq_config['password'])
-    connection = pika.BlockingConnection(pika.ConnectionParameters(rabbitmq_config['host'], rabbitmq_config['port'], '/', credentials))
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(rabbitmq_config['host'], rabbitmq_config['port'], '/', credentials))
     channel = connection.channel()
     print("成功初始化rabbitmq连接")
     return channel
@@ -73,7 +75,11 @@ def call_back(call_back_url, task_id, call_back_output, retrys=3):
         print(f"重试次数用完:{task_id}")
         return
     url = call_back_url + task_id
-    response = requests.post(url, data={'imgs': str(call_back_output)})
+    headers = {
+        "accept": "*/*",
+        "Content-Type": "application/json",
+    }
+    response = requests.post(url, headers=headers, data={'imgs': str(call_back_output)})
     if response.status_code == 200:
         print(f"回调成功:{task_id}")
     else:
@@ -123,7 +129,6 @@ def consume_magic_task(task):
     print(f"magic_api任务结束：{datetime.datetime.now()}")
 
 
-
 # 消费成功的回调函数
 def rabbitmq_callback(ch, method, properties, body):
     task = json.loads(body)
@@ -138,7 +143,6 @@ def rabbitmq_callback(ch, method, properties, body):
 
 
 if __name__ == '__main__':
-
     channel = init_rabbitmq_channel(load_rabbitmq_config())
     channel.basic_consume(queue='magic_api_task', on_message_callback=rabbitmq_callback, auto_ack=True)
     channel.start_consuming()  # 启动消费
