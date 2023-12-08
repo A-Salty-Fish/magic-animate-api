@@ -147,6 +147,7 @@ if __name__ == '__main__':
         channel = init_rabbitmq_channel(load_rabbitmq_config())
         channel.basic_consume(queue='magic_api_task', on_message_callback=rabbitmq_callback, auto_ack=True)
         channel.start_consuming()  # 启动消费
+        time.sleep(5)
 
     # pos_array = ['dancing2', 'demo4', 'multi_dancing', 'running', 'running2']
     # for i in range(4, 10):
